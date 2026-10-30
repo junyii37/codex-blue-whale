@@ -1,4 +1,24 @@
-# 变更记录
+# Changelog
+
+## codex-v0.4.1(blue1) — 2026-10-12
+
+macOS-focused build maintained by [junyii37](https://github.com/junyii37), based on Codex-Whale-Public (internal version 0.4.1).
+
+- Show the widget only while Codex or the widget's own menu is in the foreground; hide on app switch, minimize or Mission Control, and restore on return.
+- Fix following jitter in Mission Control and foreground detection that stopped updating after long sessions.
+- Subscription page shows only remaining quota with 5-hour and weekly bars, moved closer to the bubble center.
+- Restore DSH-style random lines and GIFs on the second page; configurable click behavior for bubble and character.
+- Show per-turn local token counts separately from account balance and subscription quota.
+- Scale menu icons with the character and keep a transparent click target of at least 24px.
+- Add `codex-whale start / stop / status` commands with no personal paths.
+- Verified mainly on macOS; Windows code kept from upstream without re-testing on hardware.
+
+---
+
+## Upstream history
+
+The entries below are upstream records (in Chinese), kept for provenance. They describe upstream builds, not this repository.
+
 
 ## Codex-v0.4(fixed) — 本地修复版
 

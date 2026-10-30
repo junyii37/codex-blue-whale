@@ -1,28 +1,28 @@
-# Codex 蓝色大肥鱼 · Blue Whale
+# Codex Blue Whale
 
-跟随 Codex 窗口的蓝色伴随挂件：看订阅剩余额度，点一下看台词和动图。
+A blue companion widget that follows the Codex desktop window: check how much of your subscription quota is left, or click it for lines and animated GIFs.
 
-基于 [Codex-Whale-Public](https://github.com/Yang-huai406/Codex-Whale-Public)，源自 [MeteorNOX 的 DSH 大肥鱼](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget)。这是非官方的 macOS 改进版，不是 Codex 内嵌控件：插件提供工具和技能，Electron 组件负责角色与气泡。
+Based on [Codex-Whale-Public](https://github.com/Yang-huai406/Codex-Whale-Public), which derives from [MeteorNOX's DSH Balance Whale](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget). This is an unofficial, improved macOS build. It is not a widget embedded inside Codex: the plugin provides tools and a skill, and an Electron component draws the character and speech bubbles.
 
-![蓝色大肥鱼角色](assets/DSniang1.png)
+![Blue Whale character](assets/DSniang1.png)
 
-## 这一版改了什么
+## What this version changes
 
-- 只在 Codex 或挂件自己的菜单处于前台时显示，切换应用、最小化或进入调度中心时隐藏，回来后恢复。
-- 修复调度中心里的跟随抖动，以及长时间运行后前台识别不更新的问题。
-- 订阅第一页只显示“剩余额度”和 5 小时、每周两条进度条；整组上移，更接近气泡中心。
-- 第二页恢复 DSH 风格的随机台词和动图。点击气泡推进，点角色回到额度页或续时；也可设置点角色推进队列。
-- 每轮本机已观测 token 单独提示，不与账户余额或订阅额度混在一起。
-- 菜单图标缩小并随角色缩放，小图标保留至少 24px 的透明点击区域。
-- 提供不含个人路径的 `codex-whale start / stop / status` 命令。
+- Shows only while Codex or the widget's own menu is in the foreground. It hides when you switch apps, minimize, or enter Mission Control, and comes back when you return.
+- Fixes jitter while following the window in Mission Control, and foreground detection that stopped updating after long sessions.
+- The subscription page shows only "remaining quota" with two progress bars (5-hour and weekly), moved up closer to the center of the bubble.
+- The second page restores DSH-style random lines and GIFs. Click the bubble to advance; click the character to return to the quota page or extend its display time. You can also set clicking the character to advance the queue.
+- Tokens observed on this machine for each turn are shown separately, never mixed with account balance or subscription quota.
+- Menu icons are smaller and scale with the character; small icons keep a transparent click target of at least 24px.
+- Adds `codex-whale start / stop / status` commands that contain no personal paths.
 
-角色导入、音效、拖动、缩放、本地工坊和 API 模式保留。此次主要验证 macOS；Windows 保留上游代码，未重新进行 Windows 实机验收。
+Character import, sound effects, dragging, resizing, the local workshop and API mode are kept. This release was verified mainly on macOS; Windows code is kept from upstream but was not re-tested on real hardware.
 
-## macOS 安装
+## Install on macOS
 
-需要 Node.js 24+（含 npm）、Codex 桌面应用，以及 Xcode Command Line Tools。首次安装要联网下载 Electron；这不是离线安装包，也不是已公证的 `.app`。
+Requires Node.js 24+ (with npm), the Codex desktop app, and Xcode Command Line Tools. The first install downloads Electron, so you need a network connection. This is not an offline installer or a notarized `.app`.
 
-下载源码并解压到长期保留的目录，例如 `~/Applications/codex-blue-whale`，进入目录执行：
+Download the source and unpack it into a directory you will keep, for example `~/Applications/codex-blue-whale`, then run:
 
 ```sh
 node --version
@@ -30,15 +30,15 @@ npm run install:mac
 npm start
 ```
 
-若缺少 Swift 编译工具，先执行 `xcode-select --install`，按系统提示完成后重试。
+If Swift build tools are missing, run `xcode-select --install`, finish the system prompt, and try again.
 
-安装器会编译窗口探针、对 Electron 做本机 ad-hoc 签名，并注册当前用户的 LaunchAgent。登录 macOS 后自动启动跟随服务，不会自动打开 Codex。安装前会生成私有备份与回滚回执，请保存在本机，不要上传。
+The installer compiles a window probe, ad-hoc signs Electron for this machine, and registers a LaunchAgent for the current user. After you log in to macOS, the follow service starts automatically; it does not open Codex. Before installing, it creates a private backup and a rollback receipt. Keep them on your machine and do not upload them.
 
-打开挂件菜单，选择 **Codex 订阅**。公开包不带维护者的设置和账户信息，首次使用需自行选择模式、角色大小。
+Open the widget menu and choose **Codex subscription**. The public package ships without the maintainer's settings or account data, so on first use you pick the mode and character size yourself.
 
-### 启动和关闭
+### Start and stop
 
-在源码目录执行 `npm start`、`npm stop`、`npm run status`。想在任意目录使用短命令，可先在源码目录执行 `npm link`：
+From the source directory, run `npm start`, `npm stop`, or `npm run status`. To use short commands from any directory, run `npm link` in the source directory first:
 
 ```sh
 codex-whale start
@@ -46,23 +46,23 @@ codex-whale stop
 codex-whale status
 ```
 
-如果 npm 全局目录不可写，用源码目录的命令即可，不要盲目加 `sudo`。`stop` 只关闭挂件，不退出 Codex，也不取消下次登录自启。永久停用自启用 `npm run uninstall:mac`；设置和记录会保留。
+If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
 
-### Codex 插件
+### Codex plugin
 
-桌面组件可独立安装。如需聊天里的鲸鱼工具和技能，再通过 Codex 的本地插件入口安装本目录中的 `api-balance-whale`；本包保留插件清单、MCP 入口与技能，内部版本仍为 0.4.1。不同 Codex 版本的入口可能不同，安装后新建聊天检查工具是否加载。
+The desktop component can be installed on its own. If you also want the whale tools and skill inside Codex chats, install `api-balance-whale` from this directory through Codex's local plugin entry. This package keeps the plugin manifest, MCP entry and skill; the internal version is still 0.4.1. The plugin entry may differ between Codex versions, so start a new chat after installing to check that the tools loaded.
 
-原版 Windows 插件安装、API 余额设置与回滚流程见 [上游说明](README-UPSTREAM.md)。上游旧版本标签、发布权限与测试记录仅描述历史，不代表本分支当前状态。
+For the original Windows plugin install, API balance settings, and rollback flow, see the [upstream README](README-UPSTREAM.md). Upstream version tags, release permissions, and test records describe history only and do not reflect the current state of this fork.
 
-## 额度与隐私
+## Quota and privacy
 
-订阅额度来自本机 Codex 会话中已观测到的官方快照，不是整个账户的实时完整账单。没有快照显示未知，过期会标记。两条进度条表示 **剩余额度 = 100% − 已用比例**；本机 token 统计不是订阅剩余 token，也不覆盖其他设备。
+Subscription quota comes from official snapshots already observed in Codex sessions on this machine. It is not a real-time, complete bill for your whole account. With no snapshot it shows "unknown", and stale data is marked. The two progress bars show **remaining quota = 100% − used fraction**. Local token counts are not your remaining subscription tokens and do not cover other devices.
 
-默认数据目录为 `~/.codex/whale-widget`，可通过 `WHALE_HOME` 指定独立目录。程序读取相关本机配置与会话记录用于识别来源、额度和用量，不为显示额度修改 Codex 模型、登录方式或 API 配置。订阅模式不需要另填 API key；API 模式主动查询时会访问你配置的服务。
+The default data directory is `~/.codex/whale-widget`; set `WHALE_HOME` to use a different one. The program reads related local configuration and session records to identify sources, quota and usage. It does not change your Codex model, sign-in method or API configuration in order to display quota. Subscription mode needs no API key; API mode contacts the service you configured when it queries.
 
-公开包不含密钥、账户配置、聊天、账本、个人绝对路径、运行时缓存、测试截图和私有备份。不要把自己的数据目录加入 Git。
+The public package contains no keys, account configuration, chats, ledgers, personal absolute paths, runtime caches, test screenshots or private backups. Do not add your own data directory to Git.
 
-## 测试和打包
+## Test and package
 
 ```sh
 npm test
@@ -70,16 +70,29 @@ python3 tests/release-privacy-test.py
 python3 scripts/build-release.py --release-tag 'codex-v0.4.1(blue1)' --publication-ready
 ```
 
-构建器生成安装包、源码包与 SHA-256 清单，不会上传 GitHub；`--publication-ready` 是本地构建标记，不代表已经发布。
+The builder produces an installer package, a source package and a SHA-256 manifest. It does not upload anything to GitHub; `--publication-ready` is a local build flag and does not mean the build was published.
 
-原安装的 502 项自动测试通过，6 项平台相关测试跳过；新增公开版 CLI 使用隔离模拟测试，不在打包时重装当前机器。前台隐藏/恢复及调度中心防抖已获用户实机确认，额度位置和菜单缩放已检查实际界面。未用干净 macOS 账户完整安装或重启机器验收自启，未重新执行 Windows 实机测试。
+The original suite of 502 automated tests passes, with 6 platform-specific tests skipped. The new public CLI uses isolated mock tests and does not reinstall the current machine during packaging. Foreground hide/restore and the Mission Control jitter fix were confirmed by the user on real hardware, and quota layout and menu scaling were checked in the actual UI. A full install on a clean macOS account, auto-start after a reboot, and Windows hardware tests have not been redone.
 
-## 来源与许可
+## Credits and license
 
-开源维护：[junyii37](https://github.com/junyii37)。本分支不将上游工作改称为原创。
+Maintained by [junyii37](https://github.com/junyii37). This fork does not present upstream work as its own.
 
-- DSH 原作者：[MeteorNOX](https://github.com/MeteorNOX)。
-- Codex 适配：[Yang-huai406](https://github.com/Yang-huai406)。
-- macOS 原始兼容：[1llysviel 的 PR #128](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget/pull/128)，保留实现与署名。
+- DSH original author: [MeteorNOX](https://github.com/MeteorNOX)
+- Codex adaptation: [Yang-huai406](https://github.com/Yang-huai406)
+- Original macOS compatibility: [1llysviel's PR #128](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget/pull/128), with implementation and attribution kept
 
-代码沿用 [MIT License](LICENSE)，保留上游 Copyright (c) 2026 MeteorNOX。图片、动图和音效继续按上游分发边界随挂件提供；代码 MIT 不额外授予素材权利，也不声明媒体为本分支原创。见 [第三方声明](THIRD_PARTY_NOTICES.md)、[署名](docs/ATTRIBUTION.md) 和 [历史来源](PROVENANCE.md)。
+Code remains under the [MIT License](LICENSE), keeping the upstream Copyright (c) 2026 MeteorNOX. Images, GIFs and sound effects ship with the widget under the upstream distribution terms; the MIT license on the code grants no additional rights to these assets, and they are not claimed as original to this fork. See [Third-party notices](THIRD_PARTY_NOTICES.md), [Attribution](docs/ATTRIBUTION.md) and [Provenance](PROVENANCE.md).
+
+Documents under `docs/`, along with `README-UPSTREAM.md`, are upstream development records kept for provenance. They are written in Chinese and describe upstream releases, not this fork.
+
+## Build cost
+
+This fork was vibe-coded with OpenAI Codex. Usage was not recorded, so the figures below are a rough **estimate**, not a measurement:
+
+| | Approx. |
+| --- | --- |
+| Tokens processed | ~30M–100M (mostly cached context re-reads) |
+| Tokens generated | ~0.1M–0.3M |
+
+The estimate is based on the size of the work: about 1,200 lines of code and tests changed against upstream in a codebase of roughly 34K lines, plus several rounds of on-device testing for window following and Mission Control. It is scaled from a measured session of smaller, similar work ([Clay](https://github.com/junyii37/markdown-viewer-clay): ~11M tokens processed for a ~6.5 KB theme with test renders and fixes).

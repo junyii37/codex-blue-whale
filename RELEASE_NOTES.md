@@ -1,3 +1,15 @@
+# Release notes
+
+## codex-v0.4.1(blue1)
+
+A macOS-focused build of Codex Blue Whale maintained by [junyii37](https://github.com/junyii37). See [CHANGELOG.md](CHANGELOG.md) for the full list of changes and [README.md](README.md) for installation.
+
+---
+
+## Upstream release notes
+
+The notes below are from the upstream Codex adaptation (in Chinese), kept for provenance. They do not describe this repository.
+
 # Codex-v0.4(fixed)
 
 For-Codex 修复发行版。发布标签精确为 `codex-v0.4.0(fixed)`；程序内部版本仍为 `0.4.1`，构建标识为 `auto-probe-fixed-20261005`。此前 `codex-v0.4.0` 发布保持不变。

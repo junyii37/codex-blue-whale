@@ -1,3 +1,5 @@
+> **Note:** This is the upstream README of the Codex adaptation, kept for provenance. It is in Chinese and describes upstream releases, not this repository. For this build, see [README.md](README.md).
+
 # API 余额小鲸鱼 · Codex-v0.4(fixed)
 
 跟随 Codex 显示 API 余额、密钥额度、已观测消费和本机 token；也可查看 Codex 订阅额度快照，或作为独立桌面挂件使用。支持角色、动图、气泡、音效、拖动缩放和本地素材工坊。
