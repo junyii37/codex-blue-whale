@@ -46,7 +46,7 @@ codex-whale stop
 codex-whale status
 ```
 
-If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
+If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `start` also clears a pause saved by the widget menu, so you can reopen it without quitting Codex first. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
 
 ### Codex plugin
 
@@ -72,7 +72,7 @@ python3 scripts/build-release.py --release-tag 'codex-v0.4.1(blue1)' --publicati
 
 The builder produces an installer package, a source package and a SHA-256 manifest. It does not upload anything to GitHub; `--publication-ready` is a local build flag and does not mean the build was published.
 
-The original suite of 502 automated tests passes, with 6 platform-specific tests skipped. The new public CLI uses isolated mock tests and does not reinstall the current machine during packaging. Foreground hide/restore and the Mission Control jitter fix were confirmed by the user on real hardware, and quota layout and menu scaling were checked in the actual UI. A full install on a clean macOS account, auto-start after a reboot, and Windows hardware tests have not been redone.
+The current suite passes 509 automated tests, with 6 platform-specific tests skipped (515 total). Startup recovery and long-path local IPC have regression coverage. The new public CLI uses isolated mock tests and does not reinstall the current machine during packaging. Foreground hide/restore and the Mission Control jitter fix were confirmed by the user on real hardware, and quota layout and menu scaling were checked in the actual UI. A full install on a clean macOS account, auto-start after a reboot, and Windows hardware tests have not been redone.
 
 ## Credits and license
 
@@ -95,4 +95,4 @@ This fork was vibe-coded with OpenAI Codex. Usage was not recorded, so the figur
 | Tokens processed | ~30M–100M (mostly cached context re-reads) |
 | Tokens generated | ~0.1M–0.3M |
 
-The estimate is based on the size of the work: about 1,200 lines of code and tests changed against upstream in a codebase of roughly 34K lines, plus several rounds of on-device testing for window following and Mission Control. It is scaled from a measured session of smaller, similar work ([Clay](https://github.com/junyii37/markdown-viewer-clay): ~11M tokens processed for a ~6.5 KB theme with test renders and fixes).
+The estimate is based on the size of the work: about 1,200 lines of code and tests changed against upstream in a codebase of roughly 34K lines, plus several rounds of on-device testing for window following and Mission Control. It is scaled from a measured session of smaller, similar work ([Clay](https://github.com/junyii37/markdown-viewer-themes): ~11M tokens processed for a ~6.5 KB theme with test renders and fixes).

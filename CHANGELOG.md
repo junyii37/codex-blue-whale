@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Explicitly starting the widget clears the pause saved by its menu, allowing it to reopen within the same Codex session.
+- Bound LaunchAgent commands to a 10-second timeout.
+- Use a short, private, per-user socket directory when a data path exceeds the macOS Unix-socket limit; keep authentication and ordinary paths unchanged.
+- Add regression tests for pause recovery and authenticated communication with long data paths.
+
 ## codex-v0.4.1(blue1) — 2026-10-12
 
 macOS-focused build maintained by [junyii37](https://github.com/junyii37), based on Codex-Whale-Public (internal version 0.4.1).

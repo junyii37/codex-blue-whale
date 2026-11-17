@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { manageLaunchAgent } from '../scripts/whale.mjs';
+import { manageLaunchAgent, clearStartPause } from '../scripts/whale.mjs';
 const config = { enabled: true, platform: 'darwin', label: 'com.api-balance-whale.codex', launchAgentPath: '/synthetic/whale.plist' };
 function fixture(initial) {
   const calls=[];let loaded=initial;
@@ -46,4 +46,20 @@ test('npm-link style symlink invokes the CLI rather than silently importing it',
     const result=spawnSync(process.execPath,[link,'invalid-test-command'],{encoding:'utf8'});
     assert.equal(result.status,1);assert.match(result.stderr,/Usage: codex-whale/);assert.equal(result.stdout,'');
   } finally { fs.rmSync(folder,{recursive:true,force:true}); }
+});
+
+test('explicit start clears a saved menu pause and preserves unrelated settings', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'whale-resume-'));
+  try {
+    const marker = path.join(dir, 'pause-until-host-exit.json');
+    const settings = path.join(dir, 'follow-config.json');
+    fs.writeFileSync(marker, JSON.stringify({ pauseAll: true }));
+    fs.writeFileSync(settings, '{"enabled":true}');
+    clearStartPause(dir);
+    assert.equal(fs.existsSync(marker), false);
+    assert.equal(fs.readFileSync(settings, 'utf8'), '{"enabled":true}');
+    assert.doesNotThrow(() => clearStartPause(dir));
+    fs.mkdirSync(marker);
+    assert.throws(() => clearStartPause(dir));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

@@ -11,7 +11,7 @@ export function manageLaunchAgent(command, { config, exists = fs.existsSync, run
   if (!config?.enabled || config.platform !== 'darwin') return false;
   if (!/^com\.api-balance-whale\.codex(?:\.[a-z0-9-]+)*$/.test(config.label || '')) throw Error('Invalid whale LaunchAgent label.');
   const domain = 'gui/' + uid, service = domain + '/' + config.label;
-  const call = args => run('/bin/launchctl', args, { encoding: 'utf8' });
+  const call = args => run('/bin/launchctl', args, { encoding: 'utf8', timeout: 10000 });
   const loaded = () => call(['print', service]).status === 0;
   if (command === 'start') {
     if (!loaded()) {
@@ -27,11 +27,25 @@ export function manageLaunchAgent(command, { config, exists = fs.existsSync, run
   return true;
 }
 
+// An explicit start resumes a widget previously stopped from its menu.
+// Only a missing marker is harmless; permission errors must remain visible.
+export function clearStartPause(dataDir = DATA_HOME) {
+  try { fs.unlinkSync(path.join(dataDir, 'pause-until-host-exit.json')); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+}
+
 export async function main(command = 'start') {
   if (!['start', 'open', 'stop', 'status'].includes(command)) throw Error('Usage: codex-whale [start|stop|status]');
   if (command === 'open') command = 'start';
   const config = readJson(path.join(DATA_HOME, 'follow-config.json'), {});
-  if (process.platform === 'darwin' && command !== 'status') manageLaunchAgent(command, { config });
+  if (process.platform === 'darwin' && command !== 'status') {
+    if (command === 'start') {
+      // Validate before clearing state or invoking launchctl.
+      if (config.enabled && config.platform === 'darwin' && !/^com\.api-balance-whale\.codex(?:\.[a-z0-9-]+)*$/.test(config.label || '')) throw Error('Invalid whale LaunchAgent label.');
+      clearStartPause();
+    }
+    manageLaunchAgent(command, { config });
+  }
   if (command === 'start') {
     // An installed supervisor owns startup; never race it with a second process.
     if (process.platform === 'darwin' && config.enabled && config.platform === 'darwin') {
