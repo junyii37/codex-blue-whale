@@ -6,7 +6,11 @@ import { DATA_HOME, VERSION, readJson, writeJson } from './paths.mjs';
 
 export function pipeName(dataDir = DATA_HOME) {
   const hash = crypto.createHash('sha256').update(path.resolve(dataDir).toLowerCase()).digest('hex').slice(0, 24);
-  return process.platform === 'win32' ? '\\\\.\\pipe\\codex-whale-' + hash : path.join(dataDir, 'whale-' + hash + '.sock');
+  if (process.platform === 'win32') return '\\\\.\\pipe\\codex-whale-' + hash;
+  const local = path.join(dataDir, 'whale-' + hash + '.sock');
+  // macOS sockaddr_un reserves only 104 bytes including the terminator.
+  // Temporary directories and custom data paths routinely exceed that limit.
+  return Buffer.byteLength(local) < 104 ? local : path.join('/tmp', 'codex-whale-' + process.getuid(), hash + '.sock');
 }
 const ALLOWED = new Map([
   ['/api/status', 'GET'], ['/dsh-whale/balance.json', 'GET'], ['/dsh-whale/usage-records.json', 'GET'], ['/api/show', 'POST'], ['/api/stop', 'POST'],
@@ -14,6 +18,15 @@ const ALLOWED = new Map([
 
 export async function startBridge(dispatcher, { dataDir = DATA_HOME, onHost = null, onMode = null, onResetPosition = null } = {}) {
   const pipe = pipeName(dataDir), token = crypto.randomBytes(32).toString('hex'), instanceId = crypto.randomUUID();
+  if (process.platform !== 'win32' && path.resolve(path.dirname(pipe)) !== path.resolve(dataDir)) {
+    const directory = path.dirname(pipe);
+    try { fs.mkdirSync(directory, { mode: 0o700 }); }
+    catch (error) { if (error.code !== 'EEXIST') throw error; }
+    const info = fs.lstatSync(directory);
+    if (!info.isDirectory() || info.isSymbolicLink() || info.uid !== process.getuid() || (info.mode & 0o077) !== 0) {
+      throw new Error('Desktop IPC directory must be private and owned by the current user');
+    }
+  }
   if (process.platform !== 'win32' && fs.existsSync(pipe)) {
     // A recycled PID or missing runtime.json must never unlink a live socket.
     if (await socketResponds(pipe)) throw new Error('A desktop IPC server is already listening');

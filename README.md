@@ -46,7 +46,22 @@ codex-whale stop
 codex-whale status
 ```
 
-If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
+If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `start` also clears a pause saved by the widget menu, so you can reopen it without quitting Codex first. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
+
+### Double-click launchers
+
+All launcher filenames use English. Keep them in the repository root so their relative paths work.
+
+| Action | macOS | Windows |
+| --- | --- | --- |
+| Install | `install-macos.command` | `install-plugin.cmd` |
+| Start widget | `start-widget.command` | `start-widget.cmd` |
+| Stop widget | `stop-widget.command` | `stop-widget.cmd` |
+| Disable auto-follow | `disable-auto-follow.command` | `disable-auto-follow.cmd` |
+| Standalone mode | `standalone-mode.command` | `standalone-mode.cmd` |
+| Roll back | `rollback-macos.command` | `rollback-install.cmd` |
+
+Windows also includes `install-desktop.cmd` and `install-auto-follow.cmd` for the corresponding individual components.
 
 ### Codex plugin
 
@@ -72,7 +87,7 @@ python3 scripts/build-release.py --release-tag 'codex-v0.4.1(blue1)' --publicati
 
 The builder produces an installer package, a source package and a SHA-256 manifest. It does not upload anything to GitHub; `--publication-ready` is a local build flag and does not mean the build was published.
 
-The original suite of 502 automated tests passes, with 6 platform-specific tests skipped. The new public CLI uses isolated mock tests and does not reinstall the current machine during packaging. Foreground hide/restore and the Mission Control jitter fix were confirmed by the user on real hardware, and quota layout and menu scaling were checked in the actual UI. A full install on a clean macOS account, auto-start after a reboot, and Windows hardware tests have not been redone.
+The current suite passes 509 automated tests, with 6 platform-specific tests skipped (515 total). Startup recovery and long-path local IPC have regression coverage. The new public CLI uses isolated mock tests and does not reinstall the current machine during packaging. Foreground hide/restore and the Mission Control jitter fix were confirmed by the user on real hardware, and quota layout and menu scaling were checked in the actual UI. A full install on a clean macOS account, auto-start after a reboot, and Windows hardware tests have not been redone.
 
 ## Credits and license
 
@@ -84,7 +99,7 @@ Maintained by [junyii37](https://github.com/junyii37). This fork does not presen
 
 Code remains under the [MIT License](LICENSE), keeping the upstream Copyright (c) 2026 MeteorNOX. Images, GIFs and sound effects ship with the widget under the upstream distribution terms; the MIT license on the code grants no additional rights to these assets, and they are not claimed as original to this fork. See [Third-party notices](THIRD_PARTY_NOTICES.md), [Attribution](docs/ATTRIBUTION.md) and [Provenance](PROVENANCE.md).
 
-Documents under `docs/`, along with `README-UPSTREAM.md`, are upstream development records kept for provenance. They are written in Chinese and describe upstream releases, not this fork.
+The `docs/` folder keeps attribution, platform guidance, protocol references and known limitations. Historical development diaries, superseded checklists and duplicate release notes are available in [Git history](https://github.com/junyii37/codex-blue-whale/tree/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs), rather than bundled with every download. `README-UPSTREAM.md` retains the upstream installation guide and is written in Chinese.
 
 ## Build cost
 
@@ -95,4 +110,4 @@ This fork was vibe-coded with OpenAI Codex. Usage was not recorded, so the figur
 | Tokens processed | ~30M–100M (mostly cached context re-reads) |
 | Tokens generated | ~0.1M–0.3M |
 
-The estimate is based on the size of the work: about 1,200 lines of code and tests changed against upstream in a codebase of roughly 34K lines, plus several rounds of on-device testing for window following and Mission Control. It is scaled from a measured session of smaller, similar work ([Clay](https://github.com/junyii37/markdown-viewer-clay): ~11M tokens processed for a ~6.5 KB theme with test renders and fixes).
+The estimate is based on the size of the work: about 1,200 lines of code and tests changed against upstream in a codebase of roughly 34K lines, plus several rounds of on-device testing for window following and Mission Control. It is scaled from a measured session of smaller, similar work ([Clay](https://github.com/junyii37/markdown-viewer-themes): ~11M tokens processed for a ~6.5 KB theme with test renders and fixes).

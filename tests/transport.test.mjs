@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { startBridge, bridgeRequest } from '../runtime/bridge.mjs';
+import { startBridge, bridgeRequest, pipeName } from '../runtime/bridge.mjs';
 import { stripRetiredModules } from '../runtime/migration.mjs';
 import { ROOT } from '../runtime/paths.mjs';
 import { ConfigStore } from '../runtime/config.mjs';
@@ -158,4 +158,19 @@ test('MCP process supports initialization and tool discovery without logging cre
   const messages = output.trim().split('\n').map(JSON.parse);
   assert.equal(messages.find(x => x.id === 1).result.serverInfo.name, 'api-balance-whale');
   assert.deepEqual(messages.find(x => x.id === 2).result.tools.map(x => x.name), ['whale_balance', 'whale_usage', 'whale_status', 'whale_open']);
+});
+
+test('long data paths use a short private socket and retain authenticated IPC', { skip: process.platform === 'win32' }, async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'whale-long-path-'));
+  const dataDir = path.join(root, 'nested-' + 'x'.repeat(100));
+  fs.mkdirSync(dataDir, { recursive: true });
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const dispatcher = { async dispatch() { return { status: 200, body: Buffer.from('{"ok":true}') }; } };
+  const bridge = await startBridge(dispatcher, { dataDir });
+  t.after(() => bridge.close());
+  assert.ok(Buffer.byteLength(pipeName(dataDir)) < 104);
+  assert.notEqual(pipeName(dataDir), pipeName(dataDir + '-other'));
+  assert.equal(fs.statSync(path.dirname(bridge.pipe)).mode & 0o077, 0);
+  assert.equal((await bridgeRequest('/api/status', { dataDir })).ok, true);
+  assert.equal((await bridgeRequest('/api/status', { dataDir, runtime: { ...bridge, token: 'wrong' } })).ok, false);
 });
