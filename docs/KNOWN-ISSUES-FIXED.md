@@ -58,7 +58,7 @@
 | #166 / #180 命名套餐模板 | 未提供对应厂商套餐适配；余额自定义不等于套餐窗口 |
 | #170 通用额度回退 | 未实现 API→估算→手动回退，不根据本机 token 猜官方资金 |
 
-带原讨论链接的分类见 [issue 状态表](ISSUE-STATUS-FIXED.md)。DSH 网页注入、市场安装与主输入框控件问题不能直接套用为本独立 Electron 版本的故障。
+带原讨论链接的分类见 [issue 状态表](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/ISSUE-STATUS-FIXED.md)。DSH 网页注入、市场安装与主输入框控件问题不能直接套用为本独立 Electron 版本的故障。
 
 ## 安装、回滚与反馈
 

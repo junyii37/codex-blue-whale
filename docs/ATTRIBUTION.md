@@ -8,6 +8,6 @@ macOS 兼容：[PR #128](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Wid
 
 - [许可证](../LICENSE)
 - [第三方声明](../THIRD_PARTY_NOTICES.md)
-- [上游历史 README](UPSTREAM-README.md)：仅用于来源记录，旧 DSH 安装与计费口径不适用于当前插件。
+- [上游历史 README](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/UPSTREAM-README.md)：仅用于来源记录，旧 DSH 安装与计费口径不适用于当前插件。
 
 本适配不是 OpenAI 官方产品，也不代表上游发布。

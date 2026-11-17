@@ -32,4 +32,4 @@ If you believe an asset infringes your rights, open an issue naming the file and
 
 ## Upstream records
 
-Documents under `docs/` and `README-UPSTREAM.md` are upstream development records kept for provenance. They are in Chinese and describe upstream releases (for example "v0.4.0, released by Yang-huai406"), not this build.
+Essential platform, protocol, attribution and limitation documents remain under `docs/`. `README-UPSTREAM.md` retains the upstream installation guide. Superseded development notes, test reports and duplicate release notes were removed from the current checkout; their original contents remain in [Git history](https://github.com/junyii37/codex-blue-whale/tree/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs). These historical records describe upstream releases, not the current build.

@@ -48,6 +48,21 @@ codex-whale status
 
 If your global npm directory is not writable, use the commands from the source directory instead; do not add `sudo` blindly. `start` also clears a pause saved by the widget menu, so you can reopen it without quitting Codex first. `stop` only closes the widget. It does not quit Codex or cancel auto-start at the next login. To disable auto-start permanently, run `npm run uninstall:mac`; your settings and records are kept.
 
+### Double-click launchers
+
+All launcher filenames use English. Keep them in the repository root so their relative paths work.
+
+| Action | macOS | Windows |
+| --- | --- | --- |
+| Install | `install-macos.command` | `install-plugin.cmd` |
+| Start widget | `start-widget.command` | `start-widget.cmd` |
+| Stop widget | `stop-widget.command` | `stop-widget.cmd` |
+| Disable auto-follow | `disable-auto-follow.command` | `disable-auto-follow.cmd` |
+| Standalone mode | `standalone-mode.command` | `standalone-mode.cmd` |
+| Roll back | `rollback-macos.command` | `rollback-install.cmd` |
+
+Windows also includes `install-desktop.cmd` and `install-auto-follow.cmd` for the corresponding individual components.
+
 ### Codex plugin
 
 The desktop component can be installed on its own. If you also want the whale tools and skill inside Codex chats, install `api-balance-whale` from this directory through Codex's local plugin entry. This package keeps the plugin manifest, MCP entry and skill; the internal version is still 0.4.1. The plugin entry may differ between Codex versions, so start a new chat after installing to check that the tools loaded.
@@ -84,7 +99,7 @@ Maintained by [junyii37](https://github.com/junyii37). This fork does not presen
 
 Code remains under the [MIT License](LICENSE), keeping the upstream Copyright (c) 2026 MeteorNOX. Images, GIFs and sound effects ship with the widget under the upstream distribution terms; the MIT license on the code grants no additional rights to these assets, and they are not claimed as original to this fork. See [Third-party notices](THIRD_PARTY_NOTICES.md), [Attribution](docs/ATTRIBUTION.md) and [Provenance](PROVENANCE.md).
 
-Documents under `docs/`, along with `README-UPSTREAM.md`, are upstream development records kept for provenance. They are written in Chinese and describe upstream releases, not this fork.
+The `docs/` folder keeps attribution, platform guidance, protocol references and known limitations. Historical development diaries, superseded checklists and duplicate release notes are available in [Git history](https://github.com/junyii37/codex-blue-whale/tree/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs), rather than bundled with every download. `README-UPSTREAM.md` retains the upstream installation guide and is written in Chinese.
 
 ## Build cost
 

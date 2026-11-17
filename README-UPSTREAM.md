@@ -38,7 +38,7 @@ Node 主版本应至少为 24。刚安装 Node 后请重新打开终端。不要
 ## 2. Windows 安装与成功检查
 
 1. 完整解压 `Codex-v0.4(fixed).zip` 到固定目录，不要在 ZIP 内直接运行，也不要只复制一个脚本。
-2. 保留旧版本及备份，双击解压目录里的 **`安装插件.cmd`**。
+2. 保留旧版本及备份，双击解压目录里的 **`install-plugin.cmd`**。
 3. 等待安装完成。安装器检查依赖、备份旧代码和用户数据、安装桌面运行时、注册本地插件，并配置自动跟随任务。
 4. 保存最后显示的 **Private rollback receipt** 路径。它指向此次安装的 `installation.json`，只保留在本机。
 5. 打开 Codex；安装器应报告成功或监督器正在等待 Codex 窗口。需要聊天中加载新版技能/MCP 工具时，新建一个 Codex 聊天。
@@ -68,7 +68,7 @@ node .\scripts\control.mjs status
 
 核对 `version` 为 `0.4.1`、`buildRevision` 为 `auto-probe-fixed-20261005`，窗口启动后 `rendererReady` 为 `true`。安装器会核查插件已安装且启用；手动查看注册时，用安装器选中的 CLI 执行 `plugin list --json`。状态输出可能含本机路径，不要原样公开。
 
-此前主动暂停过挂件时，安装保留暂停意图。可双击 **`启动桌面挂件.cmd`**，或执行 `node .\scripts\control.mjs open` 恢复。确实希望安装同时恢复时，安装脚本支持 `-Resume`。安装失败则保留错误和私有回执，按第 10 节核对恢复目标。
+此前主动暂停过挂件时，安装保留暂停意图。可双击 **`start-widget.cmd`**，或执行 `node .\scripts\control.mjs open` 恢复。确实希望安装同时恢复时，安装脚本支持 `-Resume`。安装失败则保留错误和私有回执，按第 10 节核对恢复目标。
 
 ## 3. 第一次查看余额：默认自动检测
 
@@ -122,7 +122,7 @@ API 连接的“跟随/固定”与挂件窗口的“跟随 Codex/独立桌面�
 | 角色与气泡 | 选择角色或导入图片/动图；自定义气泡可组合文字、金额、图片等模块，素材在本机管理。 |
 | 音效与手感 | 调整总音量、事件音量、音效组和按压/回弹手感。音量为 0 不播放；任务状态音与账户金额提示分开。 |
 | 拖动与缩放 | 拖动角色；设置中调大小、吸附、翻转。位置会记忆，临时缩小窗口不会覆盖原位置意图。 |
-| 独立桌面 | 使用显示模式或 `进入独立桌面.cmd`；恢复跟随可执行 `node .\scripts\control.mjs follow`。 |
+| 独立桌面 | 使用显示模式或 `standalone-mode.cmd`；恢复跟随可执行 `node .\scripts\control.mjs follow`。 |
 | 本地工坊 | 从界面导入/导出角色、气泡图、音频与音效组 JSON 包。它是本地文件交换，不是在线市场；导出前检查私人内容。 |
 | 汇率 | 切换 USD/CNY 显示，灰色感叹号按钮查看参考汇率、日期与缓存，必要时主动刷新。只改变显示，账本保留原币种。 |
 
@@ -260,7 +260,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\path\to\backup\recov
 
 核对安装时间、目标目录、数据目录和 `previousVersion`。**前后都可能为 0.4.1，还要核对备份 `plugin/package.json` 的 `codexBuild`**：之前可能是 `provider-connections-20261005`，当前为 `auto-probe-fixed-20261005`，实际以自己的备份为准。
 
-恢复目标正确后，用完全相同的脚本与 `-Receipt` 参数去掉 `-CheckOnly` 执行。只撤销最近一次安装时，也可双击 `回滚本次安装.cmd`；如用交付目录脚本，先执行：
+恢复目标正确后，用完全相同的脚本与 `-Receipt` 参数去掉 `-CheckOnly` 执行。只撤销最近一次安装时，也可双击 `rollback-install.cmd`；如用交付目录脚本，先执行：
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\rollback-package.ps1 -CheckOnly
@@ -272,9 +272,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\rollback-packa
 
 保留 PR #128 的 Swift 窗口探针、LaunchAgent、透明浮窗与 Unix socket。本轮在 Windows x64 验证，**没有 Mac 实机验收**。
 
-Mac 需 Codex、Node.js 24+、Xcode Command Line Tools。解压到新的固定目录并保留旧目录，运行 `安装 Mac 自动跟随.command`；丢失执行位时在该目录执行 `node scripts/install-macos.mjs`。它安装桌面组件和 LaunchAgent，**不自动完成插件市场技能/MCP 注册**。检查用 `node scripts/probe-macos.mjs` 与 `node scripts/control.mjs status`。
+Mac 需 Codex、Node.js 24+、Xcode Command Line Tools。解压到新的固定目录并保留旧目录，运行 `install-macos.command`；丢失执行位时在该目录执行 `node scripts/install-macos.mjs`。它安装桌面组件和 LaunchAgent，**不自动完成插件市场技能/MCP 注册**。检查用 `node scripts/probe-macos.mjs` 与 `node scripts/control.mjs status`。
 
-回滚运行 `回滚 Mac 更新.command` 或 `node scripts/rollback-macos.mjs`，使用对应 Mac 回执。暂停方式和操作详见 [macOS 文档](docs/MACOS.md)；Spaces、全屏、多屏、睡眠及长期运行仍需当地实测。
+回滚运行 `rollback-macos.command` 或 `node scripts/rollback-macos.mjs`，使用对应 Mac 回执。暂停方式和操作详见 [macOS 文档](docs/MACOS.md)；Spaces、全屏、多屏、睡眠及长期运行仍需当地实测。
 
 ## 12. 修复范围、验证与来源
 
@@ -288,8 +288,8 @@ Mac 需 Codex、Node.js 24+、Xcode Command Line Tools。解压到新的固定�
 
 当前运行构建已通过 **482 项自动测试、9 项独立隐私门禁、真实 Electron 6 组流程、7 个布局样本和 8 张截图验证**，渲染错误为零。测试使用隔离合成服务，不代表全部站点、真实账号、Mac 或所有硬件实测，也不等于本轮最终 ZIP 已验收。成品范围、SHA-256、解压检查以随包 `release-manifest.json`、`verification-report.json` 为准。
 
-[开发历程](docs/DEVELOPMENT-FIXED.md) · [fixed 修复说明](docs/AUTO-PROBE-FIXED.md) · [功能与 issue 状态表](docs/ISSUE-STATUS-FIXED.md) · [已知限制](docs/KNOWN-ISSUES-FIXED.md) · [验收清单](docs/TEST-CHECKLIST-0.4.md) · [并行消费与连击](docs/PARALLEL-CONSUMPTION-AND-CLICKS.md)
+[开发历程](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/DEVELOPMENT-FIXED.md) · [fixed 修复说明](docs/AUTO-PROBE-FIXED.md) · [功能与 issue 状态表](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/ISSUE-STATUS-FIXED.md) · [已知限制](docs/KNOWN-ISSUES-FIXED.md) · [验收清单](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/TEST-CHECKLIST-0.4.md) · [并行消费与连击](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/PARALLEL-CONSUMPTION-AND-CLICKS.md)
 
-早期专题中的构建号、测试数和发布状态只代表当时记录；当前以本 README、[fixed 发布说明](RELEASE_NOTES.md) 和本次成品清单为准。
+早期专题中的构建号、测试数和发布状态只代表当时记录；当前以本 README、[fixed 发布说明](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/RELEASE_NOTES.md) 和本次成品清单为准。
 
-代码与文档沿用 [MIT 许可](LICENSE)，原图片、动图和音效保持上游分发条款，不因代码许可扩大素材权利。见 [来源记录](PROVENANCE.md)、[第三方声明](THIRD_PARTY_NOTICES.md) 和 [发布准备](docs/GITHUB_PUBLISHING.md)。
+代码与文档沿用 [MIT 许可](LICENSE)，原图片、动图和音效保持上游分发条款，不因代码许可扩大素材权利。见 [来源记录](PROVENANCE.md)、[第三方声明](THIRD_PARTY_NOTICES.md) 和 [发布准备](https://github.com/junyii37/codex-blue-whale/blob/d1316e74a05978fc014e95c7bcf9aeb247dca28e/docs/GITHUB_PUBLISHING.md)。

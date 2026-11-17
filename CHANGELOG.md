@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Rename all 14 root launchers to English and update their references.
+- Remove 24 superseded development/release documents; preserve historical links, attribution, runtime assets and tests.
+
 - Explicitly starting the widget clears the pause saved by its menu, allowing it to reopen within the same Codex session.
 - Bound LaunchAgent commands to a 10-second timeout.
 - Use a short, private, per-user socket directory when a data path exceeds the macOS Unix-socket limit; keep authentication and ordinary paths unchanged.
